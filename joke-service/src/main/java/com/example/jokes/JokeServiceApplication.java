@@ -1,13 +1,13 @@
-package com.example.quotes.quoteservice;
+package com.example.jokes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class QuoteServiceApplication {
+public class JokeServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(QuoteServiceApplication.class, args);
+        SpringApplication.run(JokeServiceApplication.class, args);
     }
 
 }
