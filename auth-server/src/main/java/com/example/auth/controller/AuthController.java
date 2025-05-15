@@ -16,7 +16,7 @@ import java.util.Date;
 @RequestMapping("/auth")
 public class AuthController {
 
-    // In a real application, these would be fetched from a secure source
+    
     private static final String HARDCODED_USERNAME = "user";
     private static final String HARDCODED_PASSWORD = "password";
     private static final String JWT_SECRET = "your-secret-key"; // Replace with a strong, environment-specific secret
