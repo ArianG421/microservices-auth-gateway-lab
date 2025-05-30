@@ -11,11 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class JwtValidationFilter implements GatewayFilter, Ordered {
 
-    private final String secretKey = "your-secret-key"; // Same as in AuthController
+    private static final Logger logger = LoggerFactory.getLogger(JwtValidationFilter.class);
+    private final String secretKey = "your-256-bit-secret"; // Same as in AuthController
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -25,17 +28,20 @@ public class JwtValidationFilter implements GatewayFilter, Ordered {
             String token = authHeader.substring(7); // "Bearer ".length()
             try {
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey))
-                    .build()
-                    .verify(token);
-                
+                        .build()
+                        .verify(token);
+
+                logger.info("JWT is valid for subject: {}", jwt.getSubject());
                 // Token is valid, proceed with the request
                 return chain.filter(exchange);
             } catch (JWTVerificationException e) {
+                logger.warn("Invalid or expired JWT: {}", e.getMessage());
                 // Token is invalid or expired
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
         } else {
+            logger.warn("Missing or invalid Authorization header: {}", authHeader);
             // Authorization header is missing or invalid
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();

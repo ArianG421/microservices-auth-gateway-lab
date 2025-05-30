@@ -1,13 +1,13 @@
-package com.example.jokes.jokeservice;
+package com.example.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JokeServiceApplicationTests {
+class AuthServerApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
